@@ -22,12 +22,6 @@
     -->
     <feature name="http://api.phonegap.com/1.0/device" />
 
-    <feature name="Camera">
-        <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
-
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <!--
         If you do not want any permissions to be added to your app, add the
         following tag to your config.xml; you will still have the INTERNET
