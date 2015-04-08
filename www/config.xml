@@ -6,10 +6,10 @@
         id        = "com.phonegap.helloworld"
         version   = "1.0.0">
 
-    <name>Sapul</name>
+    <name>Robot Fight</name>
 
     <description>
-        Sapuls is an exciting 2 Player game from Potatocodes.
+        Hello World sample application that responds to the deviceready event.
     </description>
 
     <author href="http://phonegap.com" email="support@phonegap.com">
