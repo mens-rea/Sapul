@@ -1,9 +1,3 @@
-// Global variables
-float radius = 50.0;
-int X, Y;
-int nX, nY;
-int delay = 16;
-
 //UNIT STATES
 
     //red units
@@ -35,13 +29,17 @@ directionFlag = 1;
 //FIRING MECHANISM
 bulletposx = 0;
 bulletposy = 0;
+startingPointx = 0;
+startingPointy = 0;
+
+//MOVEMENT
+movex = 0;
+movey = 0;
 
 var counter1 = 1;
 var counter2 = 2;
 
 var second = 1;
-
-var bite = 40;
 
 // Setup the Processing Canvas
 void setup(){
@@ -91,8 +89,6 @@ void setup(){
   //line(redunit1x, redunit1y, redunit1x, cursorPointer);
 
   secondsRadius = radius * 0.72;
-
-  setfirePoint(redunit3x, redunit3y);
 }
 
 // Main draw loop
@@ -122,9 +118,10 @@ void draw(){
      strength();
 
      fire();
+     move();
 }
 
-//RADAR ALRGORITHM
+//INITIATING RADAR
 void radar(unitcenterx, unitcentery, faction){
     fill(80);
 
@@ -181,10 +178,13 @@ void strength(){
     rect(200, 200, 50, strengthBar);
 }
 
-
+//SET FIRING POINTS COORDINATE
 void setfirePoint(unitpointx,unitpointy){
     bulletposx = unitpointx;
     bulletposy = unitpointy;
+
+    startingPointx = unitpointx;
+    startingPointy = unitpointy;
 }
 
 //FIRING ALGORITHM
@@ -194,18 +194,76 @@ void fire(){
      fill(255, 255, 255);
      ellipse(bulletposx, bulletposy, 5, 5);
      fill(0, 0, 0);
+
+     if(bulletposy>=startingPointy-50){
+        bulletposy -= 4;
+     }
      bulletposx -= 0;
-     bulletposy -= 4;
+     
      ellipse(bulletposx, bulletposy, 5, 5);
 }
 
-void move(){
-    
+void initMove(startpointx,startpointy){
+    movex=startpointx;
+    movey=startpointy;
+}
+
+void move(startpointx,startpointy,faction){
+    noStroke();
+    fill(255, 255, 255);
+    ellipse(movex, movey, 32, 32);
+
+    movex += 0;
+    movey -= 5;
+
+    if(faction==0){
+        fill(224, 90, 90);
+    }
+    else if(faction==1){
+        fill(90, 90, 224);
+    }
+
+    stroke(0,0,0);
+    strokeWeight(5);
+    ellipse(movex, movey, 25, 25);
+}
+
+//CHECKING ACTIONS
+boolean checkUnitHit(currentx,currenty){
+    if((currentx>redunit1x-unitSize/2&&currentx<redunit1x+unitSize/2)&&(currenty>redunit1y-unitSize/2&&currenty<redunit1y+unitSize/2)){
+        alert("Hit Red unit 1");
+        
+        //FIRING MECHANISM
+        //setfirePoint(redunit1x,redunit1y);
+        //fire();
+
+        //MOVEMENT
+        initMove(redunit1x,redunit1y);
+        move(redunit1x,redunit1y,0);
+    }
+    else if((currentx>redunit2x-unitSize/2&&currentx<redunit2x+unitSize/2)&&(currenty>redunit2y-unitSize/2&&currenty<redunit2y+unitSize/2)){
+        alert("Hit Red unit 2");
+    }
+    else if((currentx>redunit3x-unitSize/2&&currentx<redunit3x+unitSize/2)&&(currenty>redunit3y-unitSize/2&&currenty<redunit3y+unitSize/2)){
+        alert("Hit Red unit 3");
+    }
+
+    else if((currentx>blueunit1x-unitSize/2&&currentx<blueunit1x+unitSize/2)&&(currenty>blueunit1y-unitSize/2&&currenty<blueunit1y+unitSize/2)){
+        alert("Hit Blue unit 1");
+    }
+    else if((currentx>blueunit2x-unitSize/2&&currentx<blueunit2x+unitSize/2)&&(currenty>blueunit2y-unitSize/2&&currenty<blueunit2y+unitSize/2)){
+        alert("Hit Blue unit 2");
+    }
+    else if((currentx>blueunit3x-unitSize/2&&currentx<blueunit3x+unitSize/2)&&(currenty>blueunit3y-unitSize/2&&currenty<blueunit3y+unitSize/2)){
+        alert("Hit Blue unit 3");
+    }
 }
 
 mouseClicked = function() { 
     currentmousePosx = mouseX;
     currentmousePosy = mouseY;
+
+    checkUnitHit(currentmousePosx,currentmousePosy);
 
     alert("Your mouse position: " + currentmousePosx + "," + currentmousePosy);
 };
@@ -213,5 +271,5 @@ mouseClicked = function() {
 // Set circle's next destination
 void mouseMoved(){
   nX = mouseX;
-  nY = mouseY;  
+  nY = mouseY;
 }
