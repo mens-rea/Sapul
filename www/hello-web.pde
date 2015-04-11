@@ -1,28 +1,57 @@
+//GLOBAL FLAGS
+turnF = 0;
+
 //UNIT STATES
 
     //red units
+    unit1F=0;
     redunit1x = 100;
     redunit1y = 700;
 
+    unit2F=0;
     redunit2x = 230;
     redunit2y = 650;
 
+    unit3F=0;
     redunit3x = 380;
     redunit3y = 700;
 
+    unit4F=0;
     //blue units
     blueunit1x = 100;
     blueunit1y = 70;
 
+    unit5F=0;
     blueunit2x = 230;
     blueunit2y = 80;
 
+    unit6F=0;
     blueunit3x = 380;
     blueunit3y = 70;
 
 unitSize=25;
 
+//RADAR INDICATOR
+var counter1 = 1;
+var counter2 = 2;
+
+float s = 1;
+
+var second = 1;
+var second1 = 1;
+var second2 = 1;
+var second3 = 1;
+
+var radarF1 = 0;
+var radarF2 = 0;
+var radarF3 = 0;
+var radarF4 = 0;
+var radarF5 = 0;
+var radarF6 = 0;
+
 //BAR INDICATOR
+strengthF = 0;
+
 strengthBar = 400;
 directionFlag = 1;
 
@@ -36,11 +65,6 @@ startingPointy = 0;
 movex = 0;
 movey = 0;
 
-var counter1 = 1;
-var counter2 = 2;
-
-var second = 1;
-
 // Setup the Processing Canvas
 void setup(){
   size( 500, 850 );
@@ -52,6 +76,7 @@ void setup(){
   nX = X;
   nY = Y;  
 
+  strengthF = 0;
 
   int radius = min(width, height) / 2;
   var secondsRadius;
@@ -91,6 +116,15 @@ void setup(){
   secondsRadius = radius * 0.72;
 }
 
+void clearUnitFlags(){
+  unit1F = 0;
+  unit2F = 0;
+  unit3F = 0;
+  unit4F = 0;
+  unit5F = 0;
+  unit6F = 0;
+}
+
 // Main draw loop
 void draw(){
      // take a bite out of the tomato!
@@ -112,22 +146,75 @@ void draw(){
      //fill(0, 0, 0);
      //String s = "SAPUL!";
      //text(s, 50, 400, 400, 200);
-
-     radar(blueunit1x, blueunit1y, 1);
+    
+    if(strengthF==1){
+      strength();
+    }
      
-     strength();
-
      fire();
      move();
+
+     if(radarF1==1){
+      radar(redunit1x,redunit1y,0);
+     }
+     else if(radarF2==1){
+      radar(redunit2x,redunit2y,0);
+     }
+     else if(radarF3==1){
+      radar(redunit3x,redunit3y,0);
+     }
+     else if(radarF4==1){
+      radar(blueunit1x,blueunit1y,1);
+     }
+     else if(radarF5==1){
+      radar(blueunit2x,blueunit2y,1);
+     }
+     else if(radarF6==1){
+      radar(blueunit3x,blueunit3y,1);
+     }
 }
 
 //INITIATING RADAR
+
+boolean isradarActivated(){
+  if(radarF1==1||radarF2==1||radarF3==1||radarF4==1||radarF5==1||radarF6==1){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+void radarOff(){
+   radarF1=0;
+   radarF2=0;
+   radarF3=0;
+   radarF4=0;
+   radarF5=0;
+   radarF6=0;
+
+   s=0;
+
+   second1=0;
+   second2=0;
+   second=0;
+}
+
 void radar(unitcenterx, unitcentery, faction){
     fill(80);
 
     noStroke();
 
-    float s = map(second++, 0, 120, 0, TWO_PI) - HALF_PI;
+    if(faction==0){
+      second1 += 2;
+      second = second1;
+    }
+    else if(faction==1){
+      second2 +=2;
+      second = second2;
+    }
+
+    s = map(second, 0, 120, 0, TWO_PI) - HALF_PI;
 
     if(second==120){
         second = 1;
@@ -154,6 +241,15 @@ void radar(unitcenterx, unitcentery, faction){
 }
 
 //STRENGTH ALGORITHM
+boolean isStrengthActivated(){
+  if(strengthF==0){
+    return false;
+  }
+  else if(strengthF==1){
+    return true;
+  }
+}
+
 void strength(){
     stroke(0,0,0);
     strokeWeight(2);
@@ -232,36 +328,115 @@ void move(startpointx,startpointy,faction){
 boolean checkUnitHit(currentx,currenty){
     if((currentx>redunit1x-unitSize/2&&currentx<redunit1x+unitSize/2)&&(currenty>redunit1y-unitSize/2&&currenty<redunit1y+unitSize/2)){
         alert("Hit Red unit 1");
+
+        setup();
+        clearUnitFlags();
+        unit1F=1;
         
         //FIRING MECHANISM
         //setfirePoint(redunit1x,redunit1y);
         //fire();
 
         //MOVEMENT
-        initMove(redunit1x,redunit1y);
-        move(redunit1x,redunit1y,0);
+        //initMove(redunit1x,redunit1y);
+        //move(redunit1x,redunit1y,0);
+
+        //RADAR ACTIVATION
+        radarOff();
+        radarF1=1;
     }
     else if((currentx>redunit2x-unitSize/2&&currentx<redunit2x+unitSize/2)&&(currenty>redunit2y-unitSize/2&&currenty<redunit2y+unitSize/2)){
+        setup();
+        clearUnitFlags();
+        unit2F=1;
+
         alert("Hit Red unit 2");
+
+        //FIRING MECHANISM
+        //setfirePoint(redunit2x,redunit2y);
+        //fire();
+
+        //RADAR ACTIVATION
+        radarOff();
+        radarF2=1;
     }
     else if((currentx>redunit3x-unitSize/2&&currentx<redunit3x+unitSize/2)&&(currenty>redunit3y-unitSize/2&&currenty<redunit3y+unitSize/2)){
+        setup();
+        clearUnitFlags();
+        unit3F=1;
+
         alert("Hit Red unit 3");
+
+        //RADAR ACTIVATION
+        radarOff();
+        radarF3=1;
     }
 
     else if((currentx>blueunit1x-unitSize/2&&currentx<blueunit1x+unitSize/2)&&(currenty>blueunit1y-unitSize/2&&currenty<blueunit1y+unitSize/2)){
+        setup();
+        clearUnitFlags();
+        unit4F=1;
+
         alert("Hit Blue unit 1");
+
+        radarOff();
+        radarF4=1;
     }
     else if((currentx>blueunit2x-unitSize/2&&currentx<blueunit2x+unitSize/2)&&(currenty>blueunit2y-unitSize/2&&currenty<blueunit2y+unitSize/2)){
+        setup();
+        clearUnitFlags();
+        unit5F=1;
+
         alert("Hit Blue unit 2");
+      
+        radarOff();
+        radarF5=1;
     }
     else if((currentx>blueunit3x-unitSize/2&&currentx<blueunit3x+unitSize/2)&&(currenty>blueunit3y-unitSize/2&&currenty<blueunit3y+unitSize/2)){
+        setup();
+        clearUnitFlags();
+        unit6F=1;
+
         alert("Hit Blue unit 3");
+    
+        radarOff();
+        radarF6=1;
     }
 }
 
 mouseClicked = function() { 
     currentmousePosx = mouseX;
     currentmousePosy = mouseY;
+
+    if(isStrengthActivated()){
+      strengthF=0;
+      setup();
+      if(unit1F==1){
+        setfirePoint(redunit1x,redunit1y);
+      }
+      else if(unit2F==1){
+        setfirePoint(redunit2x,redunit2y);
+      }
+      else if(unit3F==1){
+        setfirePoint(redunit3x,redunit3y);
+      }
+      else if(unit4F==1){
+        setfirePoint(blueunit1x,blueunit1y);
+      }
+      else if(unit5F==1){
+        setfirePoint(blueunit2x,blueunit2y);
+      }
+      else if(unit6F==1){
+        setfirePoint(blueunit3x,blueunit3y);
+      }
+      fire();
+    }
+
+    if(isradarActivated()){
+      radarOff();
+      setup();
+      strengthF = 1;
+    }
 
     checkUnitHit(currentmousePosx,currentmousePosy);
 
