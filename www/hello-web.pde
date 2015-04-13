@@ -563,7 +563,7 @@ int getRange(strength){
 
 //CHECK WIN
 void checkWin(){
-  alert("RedScore:"+redScore+"BlueScore:"+blueScore);
+  //alert("RedScore:"+redScore+"BlueScore:"+blueScore);
   if(redScore>=3){
     //fill(0, 0, 0);
     //string gosr = "GAME OVER! RED WINS!";
@@ -793,7 +793,7 @@ mouseClicked = function() {
     markx = 0;
     marky = 0;
 
-    alert("return Strength! Current"+unit1x+","+unit1y+"Prepare to move!x:" + curRadarValuex + " y:" + curRadarValuey);
+    //alert("return Strength! Current"+unit1x+","+unit1y+"Prepare to move!x:" + curRadarValuex + " y:" + curRadarValuey);
 
     markx = currentUnitx - curRadarValuex;
     marky = currentUnity - curRadarValuey;
@@ -811,7 +811,7 @@ mouseClicked = function() {
     targetMarkx = markx;
     targetMarky = marky;
 
-    alert("Strength:"+curStrength+"Turn:"+turnF);
+    //alert("Strength:"+curStrength+"Turn:"+turnF);
     //alert("Fire Bullet! : "+targetMarkx+":"+targetMarky);
 
     if(selectedUnit==1){
@@ -854,12 +854,12 @@ mouseClicked = function() {
     actionF = 4;
   }
   else if(actionF == 4){
-    alert("Unit1: "+unit1x+","+unit1y);
+    //alert("Unit1: "+unit1x+","+unit1y);
 
     moveF = 1;
     move();
 
-    alert("Unit1: "+unit1x+","+unit1y);
+    //alert("Unit1: "+unit1x+","+unit1y);
 
     actionF = 5;
   }
