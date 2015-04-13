@@ -108,7 +108,7 @@ var curmouseClicky = 0;
 
 // Setup the Processing Canvas
 void setup(){
-  size(500, 850);
+  size(screen.width, screen.height);
   strokeWeight(2);
   background(255,255,255);
   frameRate( 15 );
